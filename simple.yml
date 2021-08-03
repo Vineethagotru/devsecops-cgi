@@ -1,22 +1,24 @@
-push:
-    branches:
-      - main
-    paths:
-      # - "hello.java" # Only Hello.Java File
-      # - "**.java" # Any Java File
-      - "!index.html" # Except this file, any other file changes, trigger the Job
-    paths-ignore:
-      - "index.html"
-
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       # - "hello.java" # Only Hello.Java File ( Positive Pattern )
-#       # - "**.java" # Any Java File
-#       - "!index.html" # Except this file, any other file changes, trigger the Job ( Negative Pattern )
-
-
-# on:
-#   schedule:
+name: Conditional Jobs Workflow
+on: [push]
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Steps
+        run: |
+          echo "Build Job Getting Executed"
+          ls building.txt
+  testing: 
+    runs-on: ubuntu-latest
+    if: always()
+    needs: build
+    steps:
+      - name: Testing Steps
+@@ -18,6 +19,7 @@ jobs:
+          sleep 10
+  deployment: 
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [build, testing]
+    steps:
+      - name: Deployment Steps
