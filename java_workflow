@@ -1,4 +1,4 @@
-name: Java Workflow Demo
+Name: Java Workflow Demo
 
 on: [push]
 
